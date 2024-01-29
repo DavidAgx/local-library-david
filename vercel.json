@@ -1,0 +1,15 @@
+{
+    "builds": [
+      {
+        "src": "locallibray/wsgi.py",
+        "use": "@vercel/python",
+        "config": { "runtime": "python3.10.2" }
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "locallibrary/wsgi.py"
+      }
+    ]
+}
