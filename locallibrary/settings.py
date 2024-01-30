@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config,Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,20 +23,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-&psk#na5l=p3q8_a+-$4w1f^lt3lx1c@d*p4x$ymm_rn7pwb87'
 import os
+SECRET_KEY = config("SECRET_KEY")
 # Cargar la variable de entorno. El segundo argumento es
 # el valor que ha de tomarse cuando la variable no esté
 # definida.
-stage = os.getenv("MYPROJECT_STAGE", "development")
-if stage == "production":
-    # Producción.
-    from .settings_production import *
-elif stage == "development":
-    # Desarrollo.
-    from .settings_dev import *
-else:
-    # Arrojar un error si MYPROJECT_STAGE tiene un valor desconocido.
-    raise ValueError("Unknown stage: {stage}")
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-&psk#na5l=p3q8_a+-$4w1f^lt3lx1c@d*p4x$ymm_rn7pwb87')
+# stage = os.getenv("MYPROJECT_STAGE", "development")
+# if stage == "production":
+#     # Producción.
+#     from .settings_production import *
+# elif stage == "development":
+#     # Desarrollo.
+#     from .settings_dev import *
+# else:
+#     # Arrojar un error si MYPROJECT_STAGE tiene un valor desconocido.
+#     raise ValueError("Unknown stage: {stage}")
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-&psk#na5l=p3q8_a+-$4w1f^lt3lx1c@d*p4x$ymm_rn7pwb87')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
@@ -98,8 +100,12 @@ WSGI_APPLICATION = 'locallibrary.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": config("POSTGRES_HOST"),
+        "PORT": 5432,
+        "NAME": config("POSTGRES_DATABASE"),
+        "USER": config("POSTGRES_USER"),
+        "PASSWORD": config("POSTGRES_PASSWORD")
     }
 }
 

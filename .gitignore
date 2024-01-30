@@ -1,3 +1,6 @@
+*.settings_production.py
+*.settings_dev.py
+
 # Text backup files
 *.bak
 
