@@ -22,6 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-&psk#na5l=p3q8_a+-$4w1f^lt3lx1c@d*p4x$ymm_rn7pwb87'
 import os
+# Cargar la variable de entorno. El segundo argumento es
+# el valor que ha de tomarse cuando la variable no esté
+# definida.
+stage = os.getenv("MYPROJECT_STAGE", "development")
+if stage == "production":
+    # Producción.
+    from .settings_production import *
+elif stage == "development":
+    # Desarrollo.
+    from .settings_dev import *
+else:
+    # Arrojar un error si MYPROJECT_STAGE tiene un valor desconocido.
+    raise ValueError("Unknown stage: {stage}")
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-&psk#na5l=p3q8_a+-$4w1f^lt3lx1c@d*p4x$ymm_rn7pwb87')
 
 # SECURITY WARNING: don't run with debug turned on in production!
